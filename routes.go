@@ -26,4 +26,28 @@ var routes = Routes{
 		"/users/{userID}",
 		UserShow,
 	},
+	Route{
+		"WidgetIndex",
+		"GET",
+		"/widgets",
+		WidgetIndex,
+	},
+	Route{
+		"WidgetShow",
+		"GET",
+		"/widgets/{widgetID}",
+		WidgetShow,
+	},
+	Route{
+		"WidgetCreate",
+		"POST",
+		"/widgets",
+		WidgetCreate,
+	},
+	Route{
+		"WidgetUpdate",
+		"PUT",
+		"/widgets/{widgetID}",
+		WidgetUpdate,
+	},
 }
