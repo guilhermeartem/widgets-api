@@ -7,6 +7,7 @@ import (
 
 func main() {
 
+	defer db.Close()
     router := NewRouter()
 
     log.Fatal(http.ListenAndServe(":8080", router))
