@@ -1,9 +1,10 @@
 package main
 
 import (
-    "log"
-    "net/http"
-    "gopkg.in/go-playground/validator.v9"
+	"log"
+	"net/http"
+
+	"gopkg.in/go-playground/validator.v9"
 )
 
 var validate *validator.Validate
@@ -12,7 +13,7 @@ func main() {
 	validate = validator.New()
 	defer db.Close()
 
-    router := NewRouter()
+	router := NewRouter()
 
-    log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":4000", router))
 }

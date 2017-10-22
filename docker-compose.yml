@@ -1,0 +1,28 @@
+version: '3'
+services:
+  app:
+    image: widgets-app
+    ports:
+        - "4000:4000"
+    links:
+        - db
+    depends_on:
+      - db
+    environment:
+        DB_HOST: db
+        DB_PORT: 3306
+        DB_DATABASE: widgets
+        DB_USERNAME: widgets
+        DB_PASSWORD: widgets
+        DB_AUTO_MIGRATE: 1
+        DB_AUTO_POPULATE: 1
+
+  db:
+    image: mysql
+    ports:
+        - "3306:33060"
+    environment:
+        MYSQL_ROOT_PASSWORD: root#password
+        MYSQL_DATABASE: widgets
+        MYSQL_USER: widgets
+        MYSQL_PASSWORD: widgets
