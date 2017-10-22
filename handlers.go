@@ -80,7 +80,6 @@ func WidgetShow(w http.ResponseWriter, r *http.Request) {
 
 //WidgetCreate creates a new Widget
 func WidgetCreate(w http.ResponseWriter, r *http.Request) {
-    var widget Widget
     body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
     if err != nil {
         panic(err)
@@ -88,21 +87,42 @@ func WidgetCreate(w http.ResponseWriter, r *http.Request) {
     if err := r.Body.Close(); err != nil {
         panic(err)
     }
-    if err := json.Unmarshal(body, &widget); err != nil {
+
+	var mapping interface{}
+    if err := json.Unmarshal(body, &mapping); err != nil {
         w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-        w.WriteHeader(422) // unprocessable entity
+        w.WriteHeader(http.StatusUnprocessableEntity)
         if err := json.NewEncoder(w).Encode(err); err != nil {
             panic(err)
         }
+		return
+    }
+
+	m := mapping.(map[string]interface{})
+	if err:= ValidateWidget(m); err != nil {
+		w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
+        w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, err)
+		return
+	}
+
+	// widget := CreateFromMap(m)
+	var widget Widget
+	if err := json.Unmarshal(body, &widget); err != nil {
+        w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+        w.WriteHeader(http.StatusUnprocessableEntity)
+        if err := json.NewEncoder(w).Encode(err); err != nil {
+            panic(err)
+        }
+		return
     }
 
     db.Create(&widget)
-    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
     w.WriteHeader(http.StatusCreated)
-    if err := json.NewEncoder(w).Encode(widget); err != nil {
-        panic(err)
-    }
+	fmt.Fprintln(w, "added!")
 }
+
 
 //WidgetUpdate updates a Widget
 func WidgetUpdate(w http.ResponseWriter, r *http.Request) {
@@ -122,7 +142,7 @@ func WidgetUpdate(w http.ResponseWriter, r *http.Request) {
 	    }
 	    if err := json.Unmarshal(body, &widget); err != nil {
 	        w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	        w.WriteHeader(422) // unprocessable entity
+	        w.WriteHeader(http.StatusUnprocessableEntity)
 	        if err := json.NewEncoder(w).Encode(err); err != nil {
 	            panic(err)
 	        }
