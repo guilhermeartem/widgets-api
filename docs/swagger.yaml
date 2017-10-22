@@ -1,0 +1,202 @@
+swagger: '2.0'
+info:
+  description: >-
+
+  version: 1.0.0
+  title: Widget API
+  contact:
+    email: guilherme.artem@gmail.com
+host: localhost:4000
+basePath: /
+tags:
+  - name: user
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our store
+      url: 'https://goo.gl/2UPDrE'
+  - name: widget
+    description: Everything about your Widgets
+    externalDocs:
+      description: Find out more
+      url: 'https://goo.gl/2UPDrE'
+schemes:
+  - http
+paths:
+  /users:
+    get:
+      tags:
+        - user
+      summary: Get all users
+      description: ''
+      operationId: getUsers
+      produces:
+        - application/json
+      responses:
+        default:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+  '/users/{id}':
+    get:
+      tags:
+        - user
+      summary: Get user by user id
+      description: ''
+      operationId: getUserByID
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the user that needs to be fetched.'
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        '404':
+          description: User not found
+  /widgets:
+    get:
+      tags:
+        - widget
+      summary: Get all widgets
+      description: ''
+      operationId: getWidgets
+      produces:
+        - application/json
+      responses:
+        default:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Widget'
+    post:
+      tags:
+        - widget
+      summary: Add a new widget
+      description: ''
+      operationId: addWidget
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Widget object that needs to be added
+          required: true
+          schema:
+            $ref: '#/definitions/Widget'
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request - missing fields
+        '422':
+          description: unprocessable entity
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  '/widgets/{id}':
+    get:
+      tags:
+        - widget
+      summary: Get widget by id
+      description: ''
+      operationId: getWidgetByID
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the widget that needs to be fetched.'
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Widget'
+        '404':
+          description: widget not found
+    put:
+      tags:
+        - widget
+      summary: Update widget by id
+      description: ''
+      operationId: updateWidgetByID
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the widget that needs to be updated.'
+          required: true
+          type: integer
+      responses:
+        '204':
+          description: successful operation
+        '404':
+          description: widget not found
+        '422':
+          description: unprocessable entity
+securityDefinitions:
+  petstore_auth:
+    type: oauth2
+    authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
+    flow: implicit
+    scopes:
+      'write:pets': modify pets in your account
+      'read:pets': read your pets
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+definitions:
+  User:
+    type: object
+    required:
+      - id
+      - name
+      - gravatar
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      gravatar:
+        type: string
+  Widget:
+    type: object
+    required:
+      - id
+      - name
+      - color
+      - price
+      - inventory
+      - melts
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      color:
+        type: string
+      price:
+        type: number
+        format: string
+      inventory:
+        type: integer
+      melts:
+        type: boolean
+externalDocs:
+  description: Github
+  url: 'https://goo.gl/2UPDrE'

@@ -157,10 +157,11 @@ func WidgetUpdate(w http.ResponseWriter, r *http.Request) {
 
 		db.Save(&widget)
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		w.WriteHeader(http.StatusCreated)
-		if err := json.NewEncoder(w).Encode(widget); err != nil {
-			panic(err)
-		}
+		w.WriteHeader(http.StatusNoContent)
+		fmt.Fprintln(w, "")
+		// if err := json.NewEncoder(w).Encode(widget); err != nil {
+		// 	panic(err)
+		// }
 	} else {
 		w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
 		w.WriteHeader(http.StatusNotFound)
