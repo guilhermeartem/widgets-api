@@ -77,7 +77,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 //ValidateTokenMiddleware middleware for validating if user is authenticated in the system
-func ValidateTokenMiddleware(inner http.HandlerFunc) http.Handler {
+func ValidateTokenMiddleware(inner http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		log.Println("autenticando")
