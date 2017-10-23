@@ -1,7 +1,6 @@
 swagger: '2.0'
 info:
-  description: >-
-
+  description: "API desenvolvida para o processo seletivo da RedVentures"
   version: 1.0.0
   title: Widget API
   contact:
@@ -9,25 +8,46 @@ info:
 host: localhost:4000
 basePath: /
 tags:
+  - name: login
+    description: Login Operation
   - name: user
     description: Operations about user
-    externalDocs:
-      description: Find out more about our store
-      url: 'https://goo.gl/2UPDrE'
   - name: widget
     description: Everything about your Widgets
-    externalDocs:
-      description: Find out more
-      url: 'https://goo.gl/2UPDrE'
 schemes:
   - http
 paths:
+  /login:
+    post:
+      tags:
+        - login
+      summary: Login into application
+      description: 'Use username as user and password as password'
+      operationId: login
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Widget object that needs to be added
+          required: true
+          schema:
+            $ref: '#/definitions/Login'
+      responses:
+        default:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Token'
   /users:
     get:
       tags:
         - user
       summary: Get all users
       description: ''
+      security:
+        - Bearer: []
       operationId: getUsers
       produces:
         - application/json
@@ -44,6 +64,8 @@ paths:
         - user
       summary: Get user by user id
       description: ''
+      security:
+        - Bearer: []
       operationId: getUserByID
       produces:
         - application/json
@@ -66,6 +88,8 @@ paths:
         - widget
       summary: Get all widgets
       description: ''
+      security:
+        - Bearer: []
       operationId: getWidgets
       produces:
         - application/json
@@ -81,6 +105,8 @@ paths:
         - widget
       summary: Add a new widget
       description: ''
+      security:
+        - Bearer: []
       operationId: addWidget
       consumes:
         - application/json
@@ -100,16 +126,14 @@ paths:
           description: bad request - missing fields
         '422':
           description: unprocessable entity
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
   '/widgets/{id}':
     get:
       tags:
         - widget
       summary: Get widget by id
       description: ''
+      security:
+        - Bearer: []
       operationId: getWidgetByID
       produces:
         - application/json
@@ -131,6 +155,8 @@ paths:
         - widget
       summary: Update widget by id
       description: ''
+      security:
+        - Bearer: []
       operationId: updateWidgetByID
       produces:
         - application/json
@@ -140,6 +166,12 @@ paths:
           description: 'The id of the widget that needs to be updated.'
           required: true
           type: integer
+        - in: body
+          name: body
+          description: Widget object that needs to be added
+          required: true
+          schema:
+            $ref: '#/definitions/Widget'
       responses:
         '204':
           description: successful operation
@@ -148,18 +180,26 @@ paths:
         '422':
           description: unprocessable entity
 securityDefinitions:
-  petstore_auth:
-    type: oauth2
-    authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
-    flow: implicit
-    scopes:
-      'write:pets': modify pets in your account
-      'read:pets': read your pets
-  api_key:
-    type: apiKey
-    name: api_key
-    in: header
+   Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
 definitions:
+  Login:
+    type: object
+    required:
+      - username
+      - password
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+  Token:
+    type: object
+    properties:
+      token:
+        type: string
   User:
     type: object
     required:
