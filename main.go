@@ -19,6 +19,7 @@ func main() {
 	defer db.Close()
 
 	router := NewRouter()
+	router.HandleFunc("/login", LoginHandler).Methods("POST")
 	router.PathPrefix("/docs/").Handler(http.StripPrefix("/docs/", http.FileServer(http.Dir("./docs/"))))
 	router.HandleFunc("/docs", redirectDocs)
 
