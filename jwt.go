@@ -13,8 +13,8 @@ import (
 
 //constants for testing purposes
 const (
-	ValidUser = "John"
-	ValidPass = "Doe"
+	ValidUser = "username"
+	ValidPass = "password"
 	SecretKey = "AReallyDificultSecretKeyShouldBeHere"
 )
 
@@ -77,23 +77,27 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 //ValidateTokenMiddleware middleware for validating if user is authenticated in the system
-func ValidateTokenMiddleware(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+func ValidateTokenMiddleware(inner http.HandlerFunc) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-	token, err := request.ParseFromRequest(r, request.AuthorizationHeaderExtractor,
-		func(token *jwt.Token) (interface{}, error) {
-			return SecretKey, nil
-		})
+		log.Println("autenticando")
+		token, err := request.ParseFromRequest(r, request.AuthorizationHeaderExtractor,
+			func(token *jwt.Token) (interface{}, error) {
+				return []byte(SecretKey), nil
+			})
 
-	if err == nil {
-		if token.Valid {
-			next(w, r)
+		if err == nil {
+			if token.Valid {
+				inner.ServeHTTP(w, r)
+			} else {
+				w.WriteHeader(http.StatusUnauthorized)
+				fmt.Fprint(w, "Token is not valid")
+			}
 		} else {
 			w.WriteHeader(http.StatusUnauthorized)
-			fmt.Fprint(w, "Token is not valid")
+			log.Println(err)
+			fmt.Fprint(w, "Unauthorized access to this resource")
 		}
-	} else {
-		w.WriteHeader(http.StatusUnauthorized)
-		fmt.Fprint(w, "Unauthorized access to this resource")
-	}
+	})
 
 }

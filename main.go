@@ -23,5 +23,11 @@ func main() {
 	router.PathPrefix("/docs/").Handler(http.StripPrefix("/docs/", http.FileServer(http.Dir("./docs/"))))
 	router.HandleFunc("/docs", redirectDocs)
 
+	handler := ValidateTokenMiddleware(UserIndex)
+	router.Methods("GET").
+		Path("/authenticated").
+		Name("authenticated").
+		Handler(handler)
+
 	log.Fatal(http.ListenAndServe(":4000", router))
 }
