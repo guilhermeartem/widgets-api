@@ -4,7 +4,7 @@ API de serviço de widgets e usuarios para ser consumido pelo projeto [Widgets S
 
 ## Tecnologias utilizadas
 
-A API foi produzida usando a linguagem [GO](https://golang.org/), com persistência de dados em [MySQL](https://www.mysql.com/). Foram também usadas as seguintes bibliotecas:
+A API foi produzida usando a linguagem [Go](https://golang.org/), com persistência de dados em [MySQL](https://www.mysql.com/). Foram também usadas as seguintes bibliotecas:
 
   - [gorilla/mux](github.com/gorilla/mux) - Gerador de rotas
   - [dgrijalva/jwt-go](github.com/dgrijalva/jwt-go) - Geração e autênticação de *json web tokens *
