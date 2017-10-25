@@ -80,7 +80,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 func ValidateTokenMiddleware(inner http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		log.Println("autenticando")
 		token, err := request.ParseFromRequest(r, request.AuthorizationHeaderExtractor,
 			func(token *jwt.Token) (interface{}, error) {
 				return []byte(SecretKey), nil

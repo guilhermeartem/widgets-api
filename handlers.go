@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -89,31 +89,11 @@ func WidgetCreate(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	// var mapping interface{}
-	// if err := json.Unmarshal(body, &mapping); err != nil {
-	//     w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	//     w.WriteHeader(http.StatusUnprocessableEntity)
-	//     if err := json.NewEncoder(w).Encode(err); err != nil {
-	//         panic(err)
-	//     }
-	// 	return
-	// }
-	//
-	// m := mapping.(map[string]interface{})
-	// if err:= ValidateWidget(m); err != nil {
-	// 	w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
-	//     w.WriteHeader(http.StatusBadRequest)
-	// 	fmt.Fprintln(w, err)
-	// 	return
-	// }
-
-	// widget := CreateFromMap(m)
 	var widget Widget
 	if err := json.Unmarshal(body, &widget); err != nil {
-		log.Println("unmarshal error")
 		w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
 		w.WriteHeader(http.StatusUnprocessableEntity)
-		GetWidgetUnMarshalError(err)
+		err = GetWidgetUnMarshalError(err)
 		fmt.Fprintln(w, err)
 		return
 	}
@@ -125,6 +105,7 @@ func WidgetCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	widget.ID = 0
 	db.Create(&widget)
 	w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
 	w.WriteHeader(http.StatusCreated)
@@ -148,13 +129,15 @@ func WidgetUpdate(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 		if err := json.Unmarshal(body, &widget); err != nil {
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+			w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
 			w.WriteHeader(http.StatusUnprocessableEntity)
-			if err2 := json.NewEncoder(w).Encode(err); err != nil {
-				panic(err2)
-			}
+			err = GetWidgetUnMarshalError(err)
+			fmt.Fprintln(w, err)
+			return
 		}
 
+		aux, _ := strconv.Atoi(widgetID)
+		widget.ID = uint(aux)
 		db.Save(&widget)
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusNoContent)
