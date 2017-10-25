@@ -41,8 +41,8 @@ A API pode ser acessada em [localhost:4000](localhost:4000), e a documentação 
 É provido um Dockerfile para geração de uma imagem para Docker e um arquivo docker-compose para facilitar o uso. Para executar desse modo, deve ser feito:
 
 ```sh
-$ go get github.com/guilhermeartem/widgets-api
-$ cd $GOPATH/src/github.com/guilhermeartem/widgets-api
+$ git clone github.com/guilhermeartem/widgets-api
+$ cd widgets-api
 $ docker-compose up
 ```
 
