@@ -20,11 +20,11 @@ Para executar a API é necessário ter um aquivo .env com as credenciais do banc
 - DB_HOST - Host do banco a ser acessado
 - DB_PORT - Porta usada para acessar o banco de dados
 - DB_DATABASE - Banco usado
-- DB_USERNAME - Usuário do banco de dados 
+- DB_USERNAME - Usuário do banco de dados
 - DB_PASSWORD - Senha do banco de dados
-- DB_AUTO_MIGRATE - Boolean definindo se deve ser realizada a migração das tabelas 
+- DB_AUTO_MIGRATE - Boolean definindo se deve ser realizada a migração das tabelas
 - DB_AUTO_POPULATE - Boolean definindo se deve ser realizada uma população inicial ao crias as tabelas
- 
+
 ### Executando Nativamente
 
 Para executar a API, basta executar os comandos:
@@ -47,3 +47,7 @@ $ docker-compose up
 ```
 
 A API pode ser acessada em [localhost:4000](localhost:4000), e a documentação das rotas em [localhost:4000/docs](localhost:4000/docs).
+
+##Autenticação
+
+A autenticação é realizada por meio de *Json Web Tokens* ([jwt.io](https://jwt.io/)). O JWT é obtido pela chamada à rota /api/login. O cadastro de usuários estava forado escopo desse projeto, assim, foram usadas para teste as credenciais *username/password*. Para autenticar as chamadas à API, basta adicionar ao header da requisição o campo Authorization, com valor "Bearer token".
