@@ -1,6 +1,6 @@
 # Widgets API
 
-API de serviço de widgets e usuarios para ser consumido pelo projeto [Widgets SPA](https://github.com/RedVentures/widgets-spa) como desafio para o processo seletivo da [Red Ventures](https://www.redventures.com/).
+API de serviço de widgets e usuarios para ser consumido pelo projeto [Widgets SPA](https://github.com/RedVentures/widgets-spa).
 
 ## Tecnologias utilizadas
 
@@ -31,8 +31,6 @@ Para executar a API, basta executar os comandos:
 
 ```sh
 $ go get github.com/guilhermeartem/widgets-api
-$ cd $GOPATH/src/github.com/guilhermeartem/widgets-api
-$ go install
 $ widgets-api
 ```
 
