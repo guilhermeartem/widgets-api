@@ -69,7 +69,7 @@ func WidgetShow(w http.ResponseWriter, r *http.Request) {
 	if widget.ID != 0 {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
-		if err := json.NewEncoder(w).Encode(widget); err != nil {
+		if err := json.NewEncoder(w).Encode(&widget); err != nil {
 			panic(err)
 		}
 	} else {
