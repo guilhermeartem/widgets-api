@@ -22,6 +22,25 @@ type Widget struct {
 //Widgets collection
 type Widgets []Widget
 
+//MarshalJSON function for rounding price of Widget when marshalling
+func (w *Widget) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		ID        uint   `json:"id"`
+		Name      string `json:"name`
+		Color     string `json:"color"`
+		Price     string `json:"price"`
+		Inventory int    `json:"inventory"`
+		Melts     *bool  `json:"melts"`
+	}{
+		w.ID,
+		w.Name,
+		w.Color,
+		fmt.Sprintf("%.2f", w.Price),
+		w.Inventory,
+		w.Melts,
+	})
+}
+
 //ValidateWidget validates a widget
 func (widget *Widget) ValidateWidget() error {
 	log.Println(widget)
